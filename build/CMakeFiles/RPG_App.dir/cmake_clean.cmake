@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/RPG_App.dir/src/core/Game.cpp.o"
+  "CMakeFiles/RPG_App.dir/src/core/Game.cpp.o.d"
   "CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o"
   "CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o.d"
   "CMakeFiles/RPG_App.dir/src/entities/Istota.cpp.o"
