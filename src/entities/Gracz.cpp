@@ -1,17 +1,15 @@
 #include "../../include/Entities/Gracz.hpp"
 #include "../../include/Items/Mikstura.hpp"
-#include "../../include/Items/Bron.hpp" // Dodajemy, aby widzieć definicję Broni
+#include "../../include/Items/Bron.hpp"
 #include <iostream>
 
 namespace RPG::Entities {
 
-    // Konstruktor
     Gracz::Gracz(std::string imie, int hp, int sila)
         : Istota(imie, hp, sila), poziom(1), exp(0), expDoNastepnegoPoziomu(100) 
     {
     }
 
-    // Metoda Atakuj
     void Gracz::atakuj(Istota& cel) {
         int obrazeniaCalkowite = sila;
         
@@ -25,17 +23,13 @@ namespace RPG::Entities {
         cel.otrzymajObrazenia(obrazeniaCalkowite);
     }
 
-    // --- ZARZĄDZANIE DOŚWIADCZENIEM (EXP) ---
-
     void Gracz::dodajExp(int ilosc) {
         exp += ilosc;
         std::cout << "Zdobywasz " << ilosc << " EXP.\n";
 
-        // Sprawdzamy czy awansowaliśmy (pętla, bo może być kilka poziomów na raz)
         while (exp >= expDoNastepnegoPoziomu) {
             exp -= expDoNastepnegoPoziomu;
             awansuj();
-            // Zwiększamy próg na kolejny poziom o 50%
             expDoNastepnegoPoziomu = static_cast<int>(expDoNastepnegoPoziomu * 1.5);
         }
     }
@@ -44,21 +38,16 @@ namespace RPG::Entities {
         poziom++;
         sila += 2;
         maxHp += 10;
-        hp = maxHp; // Uleczenie przy awansie
+        hp = maxHp;
         std::cout << ">>> AWANS! " << imie << " osiaga poziom " << poziom << "! <<<\n";
     }
 
-    // --- ZARZĄDZANIE EKWIPUNKIEM ---
-
-    // Nowa metoda dla ogólnych przedmiotów
     void Gracz::podniesPrzedmiot(std::unique_ptr<RPG::Items::Przedmiot> przedmiot) {
         std::cout << "Podnosisz: " << przedmiot->getNazwa() << ".\n";
         plecak.push_back(std::move(przedmiot));
     }
 
-    // Stara metoda dla kompatybilności (jeśli gdzieś jeszcze została użyta)
     void Gracz::podniesBron(std::unique_ptr<RPG::Items::Bron> nowaBron) {
-        // Rzutujemy w górę (upcast) do klasy bazowej Przedmiot
         podniesPrzedmiot(std::move(nowaBron)); 
     }
 
@@ -79,9 +68,7 @@ namespace RPG::Entities {
             for (const auto& przedmiot : plecak) {
                 std::cout << i << ". " << przedmiot->getNazwa();
                 
-                // Dodatkowe info zależnie od typu
                 if (przedmiot->getTyp() == RPG::Items::TypPrzedmiotu::BRON) {
-                    // Rzutujemy, żeby dostać obrażenia (bezpieczne, bo sprawdziliśmy typ)
                     auto b = static_cast<RPG::Items::Bron*>(przedmiot.get());
                     std::cout << " (DMG: " << b->getObrazenia() << ")";
                 }
@@ -103,50 +90,80 @@ namespace RPG::Entities {
             return;
         }
 
-        // Pobieramy referencję do wskaźnika w plecaku
         auto& przedmiotPtr = plecak[indeks];
 
-        // --- OBSŁUGA MIKSTUR ---
         if (przedmiotPtr->getTyp() == RPG::Items::TypPrzedmiotu::MIKSTURA) {
             auto mikstura = static_cast<RPG::Items::Mikstura*>(przedmiotPtr.get());
             
             lecz(mikstura->getMoc());
             
-            // Usuwamy zużytą miksturę
             std::cout << "Zuzyles " << mikstura->getNazwa() << ".\n";
             plecak.erase(plecak.begin() + indeks);
         }
-        // --- OBSŁUGA BRONI ---
         else if (przedmiotPtr->getTyp() == RPG::Items::TypPrzedmiotu::BRON) {
-            // Wyciągamy przedmiot z plecaka (release ownership)
             std::unique_ptr<RPG::Items::Przedmiot> item = std::move(plecak[indeks]);
             plecak.erase(plecak.begin() + indeks);
 
-            // Rzutujemy na Bron (static_cast na raw pointer i zapakowanie w unique_ptr)
-            // Używamy .release(), aby 'item' oddał wskaźnik, a 'nowaBron' go przejął
             std::unique_ptr<RPG::Items::Bron> nowaBron(static_cast<RPG::Items::Bron*>(item.release()));
 
             std::cout << "Wyposazasz: " << nowaBron->getNazwa() << ".\n";
 
-            // Jeśli mieliśmy już broń w ręce, wraca ona do plecaka
             if (bron) {
-                // Musimy ją zrzutować "w górę" na Przedmiot, żeby weszła do wektora
                 std::cout << "Chowasz " << bron->getNazwa() << " do plecaka.\n";
                 plecak.push_back(std::move(bron));
             }
 
-            // Zakładamy nową broń
             bron = std::move(nowaBron);
         }
     }
     
-    // Metoda pomocnicza (jeśli Game.cpp jej potrzebuje)
     void Gracz::zalozBron(std::unique_ptr<RPG::Items::Bron> nowaBron) {
         if (bron) {
             plecak.push_back(std::move(bron));
         }
         bron = std::move(nowaBron);
         std::cout << imie << " zaklada " << bron->getNazwa() << ".\n";
+    }
+
+    bool Gracz::uzyjMiksturyWWalce() {
+        std::cout << "\n--- DOSTEPNE MIKSTURY ---\n";
+        
+        std::vector<int> indeksyMikstur;
+        
+        for (size_t i = 0; i < plecak.size(); ++i) {
+            if (plecak[i]->getTyp() == RPG::Items::TypPrzedmiotu::MIKSTURA) {
+                auto m = static_cast<RPG::Items::Mikstura*>(plecak[i].get());
+                std::cout << "Indeks [" << i << "]: " << m->getNazwa() << "\n";
+                indeksyMikstur.push_back(i);
+            }
+        }
+
+        if (indeksyMikstur.empty()) {
+            std::cout << "Nie posiadasz zadnych mikstur!\n";
+            return false;
+        }
+
+        std::cout << "Wybierz indeks mikstury (-1 aby wrocic): ";
+        int wybor;
+        std::cin >> wybor;
+
+        if (wybor == -1) return false;
+
+        bool poprawnyIndeks = false;
+        for (int idx : indeksyMikstur) {
+            if (wybor == idx) {
+                poprawnyIndeks = true;
+                break;
+            }
+        }
+
+        if (poprawnyIndeks) {
+            uzyjPrzedmiotu(wybor);
+            return true;
+        } else {
+            std::cout << "To nie jest prawidlowy indeks mikstury!\n";
+            return false;
+        }
     }
 
 }

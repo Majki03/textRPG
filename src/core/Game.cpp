@@ -67,12 +67,8 @@ namespace RPG::Core {
         }
     }
 
-    // ... include Mikstura, Wilk, Ork, Smok, Bandyta ...
-
-    // Funkcja pomocnicza do generowania losowej broni
     std::unique_ptr<RPG::Items::Bron> generujBron(int poziomTrudnosci) {
-        // poziomTrudnosci 1-3
-        int los = rand() % 3; // Proste losowanie typu
+        int los = rand() % 3;
         std::string nazwa;
         int dmg = 5 * poziomTrudnosci;
 
@@ -87,11 +83,6 @@ namespace RPG::Core {
     void Game::eksploruj() {
         std::cout << "\nEksplorujesz swiat...\n";
         int los = losujLiczbe(1, 100);
-
-        // --- TABELA ZDARZEŃ ---
-        // 1-10: Znalezienie mikstury (10%)
-        // 11-20: Znalezienie broni (10%)
-        // 21-100: Walka (80%)
         
         if (los <= 10) {
             std::cout << "Znalazles miksture!\n";
@@ -110,20 +101,13 @@ namespace RPG::Core {
         std::unique_ptr<RPG::Entities::Przeciwnik> przeciwnik;
         
         int los = losujLiczbe(1, 100);
-
-        // --- TABELA PRZECIWNIKÓW ---
-        // 1-50: Wilk (50%)
-        // 51-75: Bandyta (25%)
-        // 76-95: Ork (20%)
-        // 96-100: Smok (5%) - rzadki BOSS
         
         if (los <= 50) {
             przeciwnik = std::make_unique<RPG::Entities::Wilk>();
         } else if (los <= 75) {
-            // Bandyta ma 50% szans na posiadanie broni
             std::unique_ptr<RPG::Items::Bron> bronBandyty = nullptr;
             if (losujLiczbe(0, 1) == 1) {
-                bronBandyty = generujBron(2); // Bandyta ma lepszą broń (Tier 2)
+                bronBandyty = generujBron(2);
             }
             przeciwnik = std::make_unique<RPG::Entities::Bandyta>(std::move(bronBandyty));
         } else if (los <= 95) {
@@ -135,33 +119,51 @@ namespace RPG::Core {
 
         std::cout << "Walczysz z: " << przeciwnik->getImie() << "\n";
 
-        // Pętla walki (bez zmian, tylko dodajemy EXP na końcu)
         while (przeciwnik->czyZyje() && gracz->czyZyje()) {
-            // ... (logika walki taka sama jak wcześniej) ...
-            // Pamiętaj, aby zaimplementować tu logikę: 
-            // 1. Atak Gracza
-            // 2. Jeśli przeciwnik żyje -> Atak Przeciwnika
-             std::cout << "\n1. Atakuj  2. Uciekaj\nWybor: ";
+            std::cout << "\n--- TWOJE HP: " << gracz->getHp() << "/" << gracz->getMaxHp() << " ---\n";
+            std::cout << "1. Atakuj\n";
+            std::cout << "2. Uciekaj\n";
+            std::cout << "3. Uzyj Mikstury (Tracisz ture)\n"; 
+            std::cout << "Wybor: ";
+            
             int akcja;
             std::cin >> akcja;
 
+            bool turaGraczaWykonana = false;
+
             if (akcja == 1) {
                 gracz->atakuj(*przeciwnik);
-                if (przeciwnik->czyZyje()) {
-                    przeciwnik->atakuj(*gracz);
+                turaGraczaWykonana = true;
+            } 
+            else if (akcja == 2) {
+                if (losujLiczbe(0, 1) == 1) {
+                    std::cout << "Udalo ci sie uciec!\n";
+                    return;
+                } else {
+                    std::cout << "Nie udalo sie uciec! Potwor blokuje droge.\n";
+                    turaGraczaWykonana = true;
                 }
-            } else {
-                return;
+            }
+            else if (akcja == 3) {
+                if (gracz->uzyjMiksturyWWalce()) {
+                    turaGraczaWykonana = true;
+                }
+            }
+            else {
+                std::cout << "Nieznana komenda!\n";
+            }
+
+            if (turaGraczaWykonana && przeciwnik->czyZyje()) {
+                std::cout << "\n>>> Tura Przeciwnika <<<\n";
+                przeciwnik->atakuj(*gracz);
             }
         }
 
         if (gracz->czyZyje()) {
             std::cout << "Zwyciestwo!\n";
             
-            // 1. Przyznanie EXP
             gracz->dodajExp(przeciwnik->getExpDrop());
             
-            // 2. Sprawdzenie czy przeciwnik coś upuścił (Bandyta)
             auto lup = przeciwnik->upuscBron();
             if (lup) {
                 std::cout << "Przeciwnik upuscil bron!\n";

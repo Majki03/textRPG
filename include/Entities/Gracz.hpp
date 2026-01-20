@@ -1,7 +1,7 @@
 #pragma once
 #include "Istota.hpp"
 #include "../Items/Bron.hpp"
-#include "../Items/Przedmiot.hpp" // Ważne!
+#include "../Items/Przedmiot.hpp"
 #include <memory>
 #include <vector>
 
@@ -13,10 +13,8 @@ namespace RPG::Entities {
         int exp;
         int expDoNastepnegoPoziomu;
         
-        // Broń w ręce
         std::unique_ptr<RPG::Items::Bron> bron; 
         
-        // Plecak musi przechowywać ogólny PRZEDMIOT, nie tylko BRON
         std::vector<std::unique_ptr<RPG::Items::Przedmiot>> plecak;
 
     public:
@@ -27,14 +25,14 @@ namespace RPG::Entities {
         void dodajExp(int ilosc);
         void awansuj();
 
-        // Metody ekwipunku
-        void podniesBron(std::unique_ptr<RPG::Items::Bron> nowaBron); // Stara metoda (dla kompatybilności)
+        void podniesBron(std::unique_ptr<RPG::Items::Bron> nowaBron);
         void podniesPrzedmiot(std::unique_ptr<RPG::Items::Przedmiot> przedmiot);
         
         void pokazEkwipunek() const;
-        void uzyjPrzedmiotu(int indeks); // Zastępuje zmienBron
+        void uzyjPrzedmiotu(int indeks);
         
-        // Metoda pomocnicza dla Game.cpp, jeśli potrzebna
+        bool uzyjMiksturyWWalce();
+        
         void zalozBron(std::unique_ptr<RPG::Items::Bron> nowaBron);
     };
 

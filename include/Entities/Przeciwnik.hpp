@@ -8,27 +8,23 @@ namespace RPG::Entities {
 
     class Przeciwnik : public Istota {
     protected:
-        int expDrop; // Ile expa daje za zabicie
+        int expDrop;
     public:
         Przeciwnik(std::string imie, int hp, int sila, int exp) 
             : Istota(imie, hp, sila), expDrop(exp) {}
 
         int getExpDrop() const { return expDrop; }
         
-        // --- TO BYŁO BRAKUJĄCE OGNIWO ---
-        // Implementacja ataku dla każdego przeciwnika
         void atakuj(Istota& cel) override {
             std::cout << imie << " atakuje!\n";
             cel.otrzymajObrazenia(sila);
         }
 
-        // Metoda wirtualna, aby Bandyta mógł zwrócić łup
         virtual std::unique_ptr<RPG::Items::Bron> upuscBron() {
-            return nullptr; // Domyślnie potwory nie mają broni
+            return nullptr;
         }
     };
 
-    // --- RÓŻNE TYPY PRZECIWNIKÓW ---
     
     class Wilk : public Przeciwnik {
     public:
@@ -42,7 +38,7 @@ namespace RPG::Entities {
 
     class Smok : public Przeciwnik {
     public:
-        Smok() : Przeciwnik("Smok Wawelski", 300, 40, 2000) {}
+        Smok() : Przeciwnik("Smok", 300, 40, 2000) {}
     };
 
     class Bandyta : public Przeciwnik {
