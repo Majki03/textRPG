@@ -2,7 +2,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace RPF::Core {
+namespace RPG::Core {
     
     class GameException : public std::runtime_error {
     public:
