@@ -3,6 +3,7 @@
 #include "../../include/Items/Miecz.hpp"
 #include "../../include/Items/Mikstura.hpp"
 #include "../../include/Items/Przedmiot.hpp"
+#include "../../include/Items/LegendarnaBron.hpp"
 #include <iostream>
 #include <random>
 #include <ctime>
@@ -81,16 +82,29 @@ namespace RPG::Core {
     }
 
     void Game::eksploruj() {
-        std::cout << "\nEksplorujesz swiat...\n";
+        std::cout << "\nEksplorujesz nieznane tereny...\n";
         int los = losujLiczbe(1, 100);
-        
-        if (los <= 10) {
-            std::cout << "Znalazles miksture!\n";
-            gracz->podniesPrzedmiot(std::make_unique<RPG::Items::Mikstura>(30));
+
+        if (los <= 5) {
+            std::cout << "\n!!! NIEWIARYGODNE !!!\n";
+            std::cout << "Zauwazyles zlocista poswiate w krzakach...\n";
+            std::cout << "Znalazles LEGENDARNY OREZ!\n";
+
+            auto legenda = std::make_unique<RPG::Items::LegendarnaBron>(
+                "Ostrze Przeznaczenia", 
+                losujLiczbe(40, 60), 
+                losujLiczbe(50, 100)
+            );
+            
+            gracz->podniesPrzedmiot(std::move(legenda));
         }
-        else if (los <= 20) {
-            std::cout << "Znalazles porzucona bron!\n";
+        else if (los <= 25) {
+            std::cout << "Znalazles stara bron.\n";
             gracz->podniesPrzedmiot(generujBron(1));
+        }
+        else if (los <= 40) {
+            std::cout << "Znalazles miksture.\n";
+            gracz->podniesPrzedmiot(std::make_unique<RPG::Items::Mikstura>(30));
         }
         else {
             walka();

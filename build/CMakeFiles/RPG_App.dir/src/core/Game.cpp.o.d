@@ -804,6 +804,7 @@ CMakeFiles/RPG_App.dir/src/core/Game.cpp.o: \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Bron.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Mikstura.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Przedmiot.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/LegendarnaBron.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/random \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/bernoulli_distribution.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/uniform_real_distribution.h \

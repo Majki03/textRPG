@@ -70,7 +70,12 @@ namespace RPG::Entities {
                 
                 if (przedmiot->getTyp() == RPG::Items::TypPrzedmiotu::BRON) {
                     auto b = static_cast<RPG::Items::Bron*>(przedmiot.get());
-                    std::cout << " (DMG: " << b->getObrazenia() << ")";
+                    std::cout << " (DMG: " << b->getObrazenia();
+                    
+                    if (b->getBonusHp() > 0) {
+                        std::cout << ", HP: +" << b->getBonusHp();
+                    }
+                    std::cout << ")";
                 }
                 else if (przedmiot->getTyp() == RPG::Items::TypPrzedmiotu::MIKSTURA) {
                      auto m = static_cast<RPG::Items::Mikstura*>(przedmiot.get());
@@ -94,23 +99,35 @@ namespace RPG::Entities {
 
         if (przedmiotPtr->getTyp() == RPG::Items::TypPrzedmiotu::MIKSTURA) {
             auto mikstura = static_cast<RPG::Items::Mikstura*>(przedmiotPtr.get());
-            
             lecz(mikstura->getMoc());
-            
             std::cout << "Zuzyles " << mikstura->getNazwa() << ".\n";
             plecak.erase(plecak.begin() + indeks);
         }
         else if (przedmiotPtr->getTyp() == RPG::Items::TypPrzedmiotu::BRON) {
             std::unique_ptr<RPG::Items::Przedmiot> item = std::move(plecak[indeks]);
             plecak.erase(plecak.begin() + indeks);
-
+            
             std::unique_ptr<RPG::Items::Bron> nowaBron(static_cast<RPG::Items::Bron*>(item.release()));
 
             std::cout << "Wyposazasz: " << nowaBron->getNazwa() << ".\n";
 
             if (bron) {
+                int staryBonus = bron->getBonusHp();
+                if (staryBonus > 0) {
+                    maxHp -= staryBonus;
+                    if (hp > maxHp) hp = maxHp;
+                    std::cout << "Tracisz bonus broni: -" << staryBonus << " Max HP.\n";
+                }
+
                 std::cout << "Chowasz " << bron->getNazwa() << " do plecaka.\n";
                 plecak.push_back(std::move(bron));
+            }
+
+            int nowyBonus = nowaBron->getBonusHp();
+            if (nowyBonus > 0) {
+                maxHp += nowyBonus;
+                hp += nowyBonus;
+                std::cout << "Moc legendy przeplywa przez ciebie! +" << nowyBonus << " Max HP!\n";
             }
 
             bron = std::move(nowaBron);

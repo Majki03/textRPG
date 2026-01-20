@@ -16,5 +16,7 @@ namespace RPG::Items {
         TypPrzedmiotu getTyp() const override { return TypPrzedmiotu::BRON; }
 
         int getObrazenia() const { return obrazenia; }
+
+        virtual int getBonusHp() const { return 0; }
     };
 }
