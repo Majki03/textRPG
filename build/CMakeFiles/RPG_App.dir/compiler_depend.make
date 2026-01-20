@@ -853,6 +853,7 @@ CMakeFiles/RPG_App.dir/src/core/Game.cpp.o: /Users/majki/Developer/studia/licenc
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Entities/Istota.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Entities/Przeciwnik.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/Bron.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/LegendarnaBron.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/Miecz.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/Mikstura.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/Przedmiot.hpp
@@ -3263,6 +3264,8 @@ CMakeFiles/RPG_App.dir/src/main.cpp.o: /Users/majki/Developer/studia/licencjat/r
 /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/Mikstura.hpp:
 
 /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/Miecz.hpp:
+
+/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Items/LegendarnaBron.hpp:
 
 /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include/Entities/Przeciwnik.hpp:
 

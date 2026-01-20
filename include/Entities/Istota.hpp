@@ -26,6 +26,10 @@ namespace RPG::Entities {
         void lecz(int punkty);
 
         virtual void atakuj(Istota& cel) = 0;
-    };
+
+        virtual int pobierzObrazenia() const {
+            return sila;
+        }
+    };    
     
 }

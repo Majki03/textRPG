@@ -13,6 +13,7 @@ namespace RPG::Core {
         void menuGlowne();
         void eksploruj();
         void walka();
+        void walkaZBossem();
 
         int losujLiczbe(int min, int max);
 

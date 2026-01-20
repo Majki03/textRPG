@@ -39,6 +39,7 @@ namespace RPG::Core {
         std::cout << "2. Odpocznij (Leczenie)\n";
         std::cout << "3. Ekwipunek (Zmien bron)\n";
         std::cout << "4. Wyjdz z gry\n";
+        std::cout << "5. WALKA Z BOSSEM (Koniec Gry)\n";
         std::cout << "Wybor: ";
 
         int wybor;
@@ -63,7 +64,11 @@ namespace RPG::Core {
                     gracz->uzyjPrzedmiotu(nr);
                 }
                 break;
-            case 4: isRunning = false; break;
+            case 4: 
+                std::cout << "Zamykanie gry...\n";
+                isRunning = false; 
+                break;
+            case 5: walkaZBossem(); break;
             default: std::cout << "Nieznana opcja.\n";
         }
     }
@@ -85,24 +90,18 @@ namespace RPG::Core {
         std::cout << "\nEksplorujesz nieznane tereny...\n";
         int los = losujLiczbe(1, 100);
 
-        if (los <= 5) {
-            std::cout << "\n!!! NIEWIARYGODNE !!!\n";
-            std::cout << "Zauwazyles zlocista poswiate w krzakach...\n";
-            std::cout << "Znalazles LEGENDARNY OREZ!\n";
-
+        if (los == 1) { 
+            std::cout << "\n!!! NIEWIARYGODNE !!! Znalazles LEGENDARNY OREZ!\n";
             auto legenda = std::make_unique<RPG::Items::LegendarnaBron>(
-                "Ostrze Przeznaczenia", 
-                losujLiczbe(40, 60), 
-                losujLiczbe(50, 100)
+                "Ostrze Przeznaczenia", losujLiczbe(50, 70), losujLiczbe(100, 200)
             );
-            
             gracz->podniesPrzedmiot(std::move(legenda));
         }
-        else if (los <= 25) {
+        else if (los <= 20) {
             std::cout << "Znalazles stara bron.\n";
             gracz->podniesPrzedmiot(generujBron(1));
         }
-        else if (los <= 40) {
+        else if (los <= 35) {
             std::cout << "Znalazles miksture.\n";
             gracz->podniesPrzedmiot(std::make_unique<RPG::Items::Mikstura>(30));
         }
@@ -113,36 +112,24 @@ namespace RPG::Core {
 
     void Game::walka() {
         std::unique_ptr<RPG::Entities::Przeciwnik> przeciwnik;
-        
         int los = losujLiczbe(1, 100);
-        
-        if (los <= 50) {
-            przeciwnik = std::make_unique<RPG::Entities::Wilk>();
-        } else if (los <= 75) {
-            std::unique_ptr<RPG::Items::Bron> bronBandyty = nullptr;
-            if (losujLiczbe(0, 1) == 1) {
-                bronBandyty = generujBron(2);
-            }
-            przeciwnik = std::make_unique<RPG::Entities::Bandyta>(std::move(bronBandyty));
-        } else if (los <= 95) {
-            przeciwnik = std::make_unique<RPG::Entities::Ork>();
-        } else {
-            std::cout << "\n!!! CZUJESZ ZAPACH SIARKI... POJAWIA SIE SMOK !!!\n";
-            przeciwnik = std::make_unique<RPG::Entities::Smok>();
+        if (los <= 50) przeciwnik = std::make_unique<RPG::Entities::Wilk>();
+        else if (los <= 75) {
+             std::unique_ptr<RPG::Items::Bron> bronBandyty = nullptr;
+             if (losujLiczbe(0, 1) == 1) bronBandyty = generujBron(2);
+             przeciwnik = std::make_unique<RPG::Entities::Bandyta>(std::move(bronBandyty));
         }
+        else if (los <= 95) przeciwnik = std::make_unique<RPG::Entities::Ork>();
+        else przeciwnik = std::make_unique<RPG::Entities::Smok>();
 
         std::cout << "Walczysz z: " << przeciwnik->getImie() << "\n";
 
         while (przeciwnik->czyZyje() && gracz->czyZyje()) {
-            std::cout << "\n--- TWOJE HP: " << gracz->getHp() << "/" << gracz->getMaxHp() << " ---\n";
-            std::cout << "1. Atakuj\n";
-            std::cout << "2. Uciekaj\n";
-            std::cout << "3. Uzyj Mikstury (Tracisz ture)\n"; 
-            std::cout << "Wybor: ";
+            std::cout << "\n--- TWOJE HP: " << gracz->getHp() << " | WROG: " << przeciwnik->getHp() << " ---\n";
+            std::cout << "1. Atakuj  2. Uciekaj  3. Mikstura\nWybor: ";
             
             int akcja;
             std::cin >> akcja;
-
             bool turaGraczaWykonana = false;
 
             if (akcja == 1) {
@@ -150,39 +137,43 @@ namespace RPG::Core {
                 turaGraczaWykonana = true;
             } 
             else if (akcja == 2) {
-                if (losujLiczbe(0, 1) == 1) {
-                    std::cout << "Udalo ci sie uciec!\n";
-                    return;
-                } else {
-                    std::cout << "Nie udalo sie uciec! Potwor blokuje droge.\n";
-                    turaGraczaWykonana = true;
-                }
+                if (losujLiczbe(0, 1) == 1) { std::cout << "Uciekles!\n"; return; }
+                else { std::cout << "Ucieczka nieudana!\n"; turaGraczaWykonana = true; }
             }
             else if (akcja == 3) {
-                if (gracz->uzyjMiksturyWWalce()) {
-                    turaGraczaWykonana = true;
-                }
-            }
-            else {
-                std::cout << "Nieznana komenda!\n";
+                if (gracz->uzyjMiksturyWWalce()) turaGraczaWykonana = true;
             }
 
             if (turaGraczaWykonana && przeciwnik->czyZyje()) {
                 std::cout << "\n>>> Tura Przeciwnika <<<\n";
-                przeciwnik->atakuj(*gracz);
+                
+                int szansaNaObrone = losujLiczbe(1, 100);
+                
+                if (szansaNaObrone <= 10) {
+                    std::cout << "!!! WSPANIALY UNIK! Nie otrzymujesz obrazen! !!!\n";
+                }
+                else if (szansaNaObrone <= 25) {
+                    int dmgWroga = przeciwnik->pobierzObrazenia();
+                    int zredukowaneDmg = dmgWroga / 2;
+                    
+                    std::cout << "!!! ZABLOKOWALES ATAK! (Obrazenia: " << dmgWroga << " -> " << zredukowaneDmg << ") !!!\n";
+                    gracz->otrzymajObrazenia(zredukowaneDmg);
+
+                    int naszDmg = gracz->pobierzObrazenia() / 2;
+                    std::cout << "!!! SZYBKI KONTRATAK! Zadajesz " << naszDmg << " obrazen! !!!\n";
+                    przeciwnik->otrzymajObrazenia(naszDmg);
+                }
+                else {
+                    przeciwnik->atakuj(*gracz);
+                }
             }
         }
 
         if (gracz->czyZyje()) {
             std::cout << "Zwyciestwo!\n";
-            
             gracz->dodajExp(przeciwnik->getExpDrop());
-            
             auto lup = przeciwnik->upuscBron();
-            if (lup) {
-                std::cout << "Przeciwnik upuscil bron!\n";
-                gracz->podniesPrzedmiot(std::move(lup));
-            }
+            if (lup) gracz->podniesPrzedmiot(std::move(lup));
         }
     }
 
@@ -190,6 +181,65 @@ namespace RPG::Core {
         static std::mt19937 generator(std::time(nullptr));
         std::uniform_int_distribution<int> dystrybucja(min, max);
         return dystrybucja(generator);
+    }
+
+    void Game::walkaZBossem() {
+        std::cout << "\n\n=========================================\n";
+        std::cout << "WCHODZISZ DO KOMNATY MROCZNEGO PANA...\n";
+        std::cout << "=========================================\n";
+        
+        if (gracz->getMaxHp() < 200) {
+            std::cout << "Twoj bohater trzesie sie ze strachu... Jestes za slaby!\n";
+        }
+
+        auto boss = std::make_unique<RPG::Entities::Przeciwnik>("MROCZNY PAN", 1000, 60, 10000);
+        
+        while (boss->czyZyje() && gracz->czyZyje()) {
+            std::cout << "\n[BOSS] " << boss->getImie() << " HP: " << boss->getHp() << "\n";
+            std::cout << "[TY]   " << gracz->getImie() << " HP: " << gracz->getHp() << "/" << gracz->getMaxHp() << "\n";
+            
+            std::cout << "1. Atakuj  2. Mikstura (Ucieczka niemozliwa!)\nWybor: ";
+            int akcja;
+            std::cin >> akcja;
+            bool turaGracza = false;
+
+            if (akcja == 1) {
+                gracz->atakuj(*boss);
+                turaGracza = true;
+            } else if (akcja == 2) {
+                if (gracz->uzyjMiksturyWWalce()) turaGracza = true;
+            }
+
+            if (turaGracza && boss->czyZyje()) {
+                std::cout << "\n>>> Mroczny Pan przygotowuje potezny cios... <<<\n";
+                
+                int szansa = losujLiczbe(1, 100);
+                if (szansa <= 10) {
+                    std::cout << "Cudem uniknales smiertelnego ciosu!\n";
+                } else if (szansa <= 25) {
+                    int dmg = boss->pobierzObrazenia() / 2;
+                    std::cout << "Zablokowales czesc uderzenia! Otrzymujesz " << dmg << " obrazen.\n";
+                    gracz->otrzymajObrazenia(dmg);
+                    
+                    int kontra = gracz->pobierzObrazenia() / 2;
+                    std::cout << "Kontratakujesz za " << kontra << " pkt!\n";
+                    boss->otrzymajObrazenia(kontra);
+                } else {
+                    boss->atakuj(*gracz);
+                }
+            }
+        }
+
+        if (gracz->czyZyje()) {
+            std::cout << "\n\n*****************************************\n";
+            std::cout << "       GRATULACJE! UKONCZYLES GRE!       \n";
+            std::cout << "   Mroczny Pan upadl, a swiat jest wolny.  \n";
+            std::cout << "*****************************************\n\n";
+            isRunning = false;
+        } else {
+            std::cout << "\nZostales zmiazdzony przez Mrocznego Pana...\nGame Over.\n";
+            isRunning = false;
+        }
     }
     
 }

@@ -21,6 +21,14 @@ namespace RPG::Entities {
         Gracz(std::string imie, int hp, int sila);
 
         void atakuj(Istota& cel) override;
+
+        int pobierzObrazenia() const override {
+            int dmg = sila;
+            if (bron) {
+                dmg += bron->getObrazenia();
+            }
+            return dmg;
+        }
         
         void dodajExp(int ilosc);
         void awansuj();
