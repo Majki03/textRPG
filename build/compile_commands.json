@@ -1,0 +1,20 @@
+[
+{
+  "directory": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/build",
+  "command": "/usr/bin/clang++  -I/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include -g -std=gnu++17 -arch arm64 -o CMakeFiles/RPG_App.dir/src/main.cpp.o -c /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/main.cpp",
+  "file": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/main.cpp",
+  "output": "CMakeFiles/RPG_App.dir/src/main.cpp.o"
+},
+{
+  "directory": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/build",
+  "command": "/usr/bin/clang++  -I/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include -g -std=gnu++17 -arch arm64 -o CMakeFiles/RPG_App.dir/src/entities/Istota.cpp.o -c /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/Istota.cpp",
+  "file": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/Istota.cpp",
+  "output": "CMakeFiles/RPG_App.dir/src/entities/Istota.cpp.o"
+},
+{
+  "directory": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/build",
+  "command": "/usr/bin/clang++  -I/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include -g -std=gnu++17 -arch arm64 -o CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o -c /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/Gracz.cpp",
+  "file": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/Gracz.cpp",
+  "output": "CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o"
+}
+]

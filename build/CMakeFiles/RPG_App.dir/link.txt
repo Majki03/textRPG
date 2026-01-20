@@ -1,0 +1,1 @@
+/usr/bin/clang++ -g -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/RPG_App.dir/src/main.cpp.o CMakeFiles/RPG_App.dir/src/entities/Istota.cpp.o CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o -o RPG_App
