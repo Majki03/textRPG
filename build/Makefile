@@ -129,6 +129,30 @@ RPG_App/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/RPG_App.dir/build.make CMakeFiles/RPG_App.dir/build
 .PHONY : RPG_App/fast
 
+src/core/Game.o: src/core/Game.cpp.o
+.PHONY : src/core/Game.o
+
+# target to build an object file
+src/core/Game.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RPG_App.dir/build.make CMakeFiles/RPG_App.dir/src/core/Game.cpp.o
+.PHONY : src/core/Game.cpp.o
+
+src/core/Game.i: src/core/Game.cpp.i
+.PHONY : src/core/Game.i
+
+# target to preprocess a source file
+src/core/Game.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RPG_App.dir/build.make CMakeFiles/RPG_App.dir/src/core/Game.cpp.i
+.PHONY : src/core/Game.cpp.i
+
+src/core/Game.s: src/core/Game.cpp.s
+.PHONY : src/core/Game.s
+
+# target to generate assembly for a file
+src/core/Game.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/RPG_App.dir/build.make CMakeFiles/RPG_App.dir/src/core/Game.cpp.s
+.PHONY : src/core/Game.cpp.s
+
 src/entities/Gracz.o: src/entities/Gracz.cpp.o
 .PHONY : src/entities/Gracz.o
 
@@ -210,6 +234,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... RPG_App"
+	@echo "... src/core/Game.o"
+	@echo "... src/core/Game.i"
+	@echo "... src/core/Game.s"
 	@echo "... src/entities/Gracz.o"
 	@echo "... src/entities/Gracz.i"
 	@echo "... src/entities/Gracz.s"

@@ -11,6 +11,7 @@ set(SOURCES
     src/main.cpp
     src/entities/Istota.cpp
     src/entities/Gracz.cpp
+    src/core/Game.cpp
 )
 
 add_executable(RPG_App ${SOURCES})
