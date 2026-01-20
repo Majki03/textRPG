@@ -21,10 +21,49 @@ namespace RPG::Entities {
             cel.otrzymajObrazenia(obrazeniaCalkowite);
         }
 
-        void Gracz::zalozBron(std::unique_ptr<RPG::Items::Bron> nowaBron) {
-            bron = std::move(nowaBron);
+        void Gracz::podniesBron(std::unique_ptr<RPG::Items::Bron> nowaBron) {
+            std::cout << "Podnoszisz przedmiot: " << nowaBron->getNazwa() << ".\n";
+            
+            plecak.push_back(std::move(nowaBron));
+        }
 
-            std::cout << imie << " wyposaza " << bron->getNazwa() << ".\n";
+        void Gracz::pokazEkwipunek() const {
+            std::cout << "\n--- Ekwipunek ---\n";
+
+            if (bron) {
+                std::cout << "W rece: " << bron->getNazwa() << " (DMG: " << bron->getObrazenia() << ")\n";
+            } else {
+                std::cout << "W rece [PUSTO]\n";
+            }
+
+            std::cout << "W plecku:\n";
+            if (plecak.empty()) {
+                std::cout << "(Pusto)\n";
+            } else {
+                int i = 0;
+                for (const auto& przedmiot : plecak) {
+                    std::cout << i << ". " << przedmiot->getNazwa()
+                                << " (DMG: " << przedmiot->getObrazenia() << ")\n";
+                    i++;
+                }
+            }
+            std::cout << "-----------------\n";
+        }
+
+        void Gracz::zmienBron(int indeks) {
+            if (indeks < 0 || indeks >= plecak.size()) {
+                std::cout << "Nie ma takiego przedmiotu!\n";
+                return;
+            }
+
+            std::cout << "Zmieniasz bron na: " << plecak[indeks]->getNazwa() << ".\n";
+
+            if (bron == nullptr) {
+                bron = std::move(plecak[indeks]);
+                plecak.erase(plecak.begin() + indeks);
+            } else {
+                std::swap(bron, plecak[indeks]);
+            }
         }
 
         void Gracz::awansuj() {

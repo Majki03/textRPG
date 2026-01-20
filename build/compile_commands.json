@@ -16,11 +16,5 @@
   "command": "/usr/bin/clang++  -I/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include -g -std=gnu++17 -arch arm64 -o CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o -c /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/Gracz.cpp",
   "file": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/Gracz.cpp",
   "output": "CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o"
-},
-{
-  "directory": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/build",
-  "command": "/usr/bin/clang++  -I/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/include -g -std=gnu++17 -arch arm64 -o CMakeFiles/RPG_App.dir/src/core/Game.cpp.o -c /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/Game.cpp",
-  "file": "/Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/Game.cpp",
-  "output": "CMakeFiles/RPG_App.dir/src/core/Game.cpp.o"
 }
 ]

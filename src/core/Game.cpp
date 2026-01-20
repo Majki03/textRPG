@@ -34,7 +34,7 @@ namespace RPG::Core {
         std::cout << "Co chcesz zrobic?\n";
         std::cout << "1. Eksploruj swiat (Szukaj walki)\n";
         std::cout << "2. Odpocznij (Leczenie)\n";
-        std::cout << "3. Pokaz statystyki\n";
+        std::cout << "3. Ekwipunek (Zmien bron)\n";
         std::cout << "4. Wyjdz z gry\n";
         std::cout << "Wybor: ";
 
@@ -50,12 +50,15 @@ namespace RPG::Core {
 
         switch (wybor) {
             case 1: eksploruj(); break;
-            case 2:
-                gracz->lecz(20);
-                break;
+            case 2: gracz->lecz(20); break;
             case 3:
-                std::cout << "\n[STATYSTYKI] " << gracz->getImie()
-                            << " HP: " << gracz->getHp() << "/" << gracz->getMaxHp() << "\n";
+                gracz->pokazEkwipunek();
+                std::cout << "Wybierz numer broni do zalozenia (-1 aby anulowac): ";
+                int nr;
+                std::cin >> nr;
+                if (nr >= 0) {
+                    gracz->zmienBron(nr);
+                }
                 break;
             case 4: isRunning = false; break;
             default: std::cout << "Nieznana opcja.\n";
@@ -67,10 +70,16 @@ namespace RPG::Core {
 
         int los = losujLiczbe(1, 100);
 
-        if (los <= 30) {
-            std::cout << "Znalazles stary, zardzewialy miecz!\n";
-            auto miecz = std::make_unique<RPG::Items::Miecz>("Zardzewialy Miecz", 15);
-            gracz->zalozBron(std::move(miecz));
+        if (los <= 40) {
+            std::cout << "Znalazles porzucony ekwipunek!\n";
+
+            int mocMiecza = losujLiczbe(10, 30);
+            std::string nazwa = "Miecz " + std::to_string(mocMiecza);
+
+            auto miecz = std::make_unique<RPG::Items::Miecz>(nazwa, mocMiecza);
+
+            gracz->podniesBron(std::move(miecz));
+            
         } else {
             walka();
         }
