@@ -1,6 +1,8 @@
 #include "../../include/Core/Game.hpp"
 #include "../../include/Entities/Przeciwnik.hpp"
 #include "../../include/Items/Miecz.hpp"
+#include "../../include/Items/Mikstura.hpp"
+#include "../../include/Items/Przedmiot.hpp"
 #include <iostream>
 #include <random>
 #include <ctime>
@@ -57,7 +59,7 @@ namespace RPG::Core {
                 int nr;
                 std::cin >> nr;
                 if (nr >= 0) {
-                    gracz->zmienBron(nr);
+                    gracz->uzyjPrzedmiotu(nr);
                 }
                 break;
             case 4: isRunning = false; break;
@@ -65,51 +67,106 @@ namespace RPG::Core {
         }
     }
 
-    void Game::eksploruj() {
-        std::cout << "\nWedrujesz przez mroczny las...\n";
+    // ... include Mikstura, Wilk, Ork, Smok, Bandyta ...
 
+    // Funkcja pomocnicza do generowania losowej broni
+    std::unique_ptr<RPG::Items::Bron> generujBron(int poziomTrudnosci) {
+        // poziomTrudnosci 1-3
+        int los = rand() % 3; // Proste losowanie typu
+        std::string nazwa;
+        int dmg = 5 * poziomTrudnosci;
+
+        if (los == 0) { nazwa = "Topor"; dmg += 5; }
+        else if (los == 1) { nazwa = "Wlocznia"; dmg += 2; }
+        else { nazwa = "Mlot"; dmg += 8; }
+        
+        nazwa += " (Tier " + std::to_string(poziomTrudnosci) + ")";
+        return std::make_unique<RPG::Items::Bron>(nazwa, dmg);
+    }
+
+    void Game::eksploruj() {
+        std::cout << "\nEksplorujesz swiat...\n";
         int los = losujLiczbe(1, 100);
 
-        if (los <= 40) {
-            std::cout << "Znalazles porzucony ekwipunek!\n";
-
-            int mocMiecza = losujLiczbe(10, 30);
-            std::string nazwa = "Miecz " + std::to_string(mocMiecza);
-
-            auto miecz = std::make_unique<RPG::Items::Miecz>(nazwa, mocMiecza);
-
-            gracz->podniesBron(std::move(miecz));
-            
-        } else {
+        // --- TABELA ZDARZEŃ ---
+        // 1-10: Znalezienie mikstury (10%)
+        // 11-20: Znalezienie broni (10%)
+        // 21-100: Walka (80%)
+        
+        if (los <= 10) {
+            std::cout << "Znalazles miksture!\n";
+            gracz->podniesPrzedmiot(std::make_unique<RPG::Items::Mikstura>(30));
+        }
+        else if (los <= 20) {
+            std::cout << "Znalazles porzucona bron!\n";
+            gracz->podniesPrzedmiot(generujBron(1));
+        }
+        else {
             walka();
         }
     }
 
     void Game::walka() {
-        auto przeciwnik = std::make_unique<RPG::Entities::Goblin>("Zlosliwy Goblin");
+        std::unique_ptr<RPG::Entities::Przeciwnik> przeciwnik;
+        
+        int los = losujLiczbe(1, 100);
 
-        std::cout << "\n!!! ATAKUJE CIE " << przeciwnik->getImie() << " !!!\n";
+        // --- TABELA PRZECIWNIKÓW ---
+        // 1-50: Wilk (50%)
+        // 51-75: Bandyta (25%)
+        // 76-95: Ork (20%)
+        // 96-100: Smok (5%) - rzadki BOSS
+        
+        if (los <= 50) {
+            przeciwnik = std::make_unique<RPG::Entities::Wilk>();
+        } else if (los <= 75) {
+            // Bandyta ma 50% szans na posiadanie broni
+            std::unique_ptr<RPG::Items::Bron> bronBandyty = nullptr;
+            if (losujLiczbe(0, 1) == 1) {
+                bronBandyty = generujBron(2); // Bandyta ma lepszą broń (Tier 2)
+            }
+            przeciwnik = std::make_unique<RPG::Entities::Bandyta>(std::move(bronBandyty));
+        } else if (los <= 95) {
+            przeciwnik = std::make_unique<RPG::Entities::Ork>();
+        } else {
+            std::cout << "\n!!! CZUJESZ ZAPACH SIARKI... POJAWIA SIE SMOK !!!\n";
+            przeciwnik = std::make_unique<RPG::Entities::Smok>();
+        }
 
+        std::cout << "Walczysz z: " << przeciwnik->getImie() << "\n";
+
+        // Pętla walki (bez zmian, tylko dodajemy EXP na końcu)
         while (przeciwnik->czyZyje() && gracz->czyZyje()) {
-            std::cout << "\n1. Atakuj 2. Uciekaj\nWybor: ";
+            // ... (logika walki taka sama jak wcześniej) ...
+            // Pamiętaj, aby zaimplementować tu logikę: 
+            // 1. Atak Gracza
+            // 2. Jeśli przeciwnik żyje -> Atak Przeciwnika
+             std::cout << "\n1. Atakuj  2. Uciekaj\nWybor: ";
             int akcja;
             std::cin >> akcja;
 
             if (akcja == 1) {
                 gracz->atakuj(*przeciwnik);
-
                 if (przeciwnik->czyZyje()) {
                     przeciwnik->atakuj(*gracz);
                 }
-            } else if (akcja == 2) {
-                std::cout << "Uciekasz w poplochu!\n";
+            } else {
                 return;
             }
         }
 
         if (gracz->czyZyje()) {
-            std::cout << "\nZwyciestwo! Pokonales przeciwnika.\n";
-            gracz->awansuj();
+            std::cout << "Zwyciestwo!\n";
+            
+            // 1. Przyznanie EXP
+            gracz->dodajExp(przeciwnik->getExpDrop());
+            
+            // 2. Sprawdzenie czy przeciwnik coś upuścił (Bandyta)
+            auto lup = przeciwnik->upuscBron();
+            if (lup) {
+                std::cout << "Przeciwnik upuscil bron!\n";
+                gracz->podniesPrzedmiot(std::move(lup));
+            }
         }
     }
 

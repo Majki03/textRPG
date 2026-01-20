@@ -796,10 +796,14 @@ CMakeFiles/RPG_App.dir/src/core/Game.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Core/../Entities/../Core/GameException.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Core/../Entities/../Items/Bron.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Core/../Entities/../Items/Przedmiot.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Entities/Przeciwnik.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Entities/Istota.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Entities/../Items/Bron.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Miecz.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Bron.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Mikstura.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/core/../../include/Items/Przedmiot.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/random \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/bernoulli_distribution.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/uniform_real_distribution.h \

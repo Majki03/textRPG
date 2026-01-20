@@ -794,4 +794,8 @@ CMakeFiles/RPG_App.dir/src/entities/Gracz.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/print \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/unistd.h \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Entities/../Core/GameException.hpp \
-  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Entities/../Items/Bron.hpp
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Entities/../Items/Bron.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Entities/../Items/Przedmiot.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Items/Mikstura.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Items/Przedmiot.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/entities/../../include/Items/Bron.hpp

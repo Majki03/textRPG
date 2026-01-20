@@ -796,4 +796,5 @@ CMakeFiles/RPG_App.dir/src/main.cpp.o: \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/../include/Core/../Entities/Istota.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/../include/Core/../Entities/../Core/GameException.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/../include/Core/../Entities/../Items/Bron.hpp \
+  /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/../include/Core/../Entities/../Items/Przedmiot.hpp \
   /Users/majki/Developer/studia/licencjat/rok3/semestr5/analiza_i_projektowanie_obiektowe/textRPG/src/../include/Core/GameException.hpp

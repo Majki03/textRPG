@@ -4,16 +4,13 @@
 namespace RPG::Items {
 
     class Miecz : public Bron {
-    private:
-        std::string nazwa;
-        int obrazenia;
-
     public:
-        Miecz(std::string nazwa, int obrazenia)
-            : nazwa(nazwa), obrazenia(obrazenia) {}
-        
-        std::string getNazwa() const override { return nazwa; }
-        int getObrazenia() const override { return obrazenia; }
+        // Wywołujemy konstruktor klasy bazowej Bron
+        Miecz(std::string nazwa, int obrazenia) 
+            : Bron(nazwa, obrazenia) {}
+
+        // Nie musimy nadpisywać getNazwa() ani getObrazenia(),
+        // ponieważ klasa Bron już to robi za nas!
     };
 
 }

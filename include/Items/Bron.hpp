@@ -1,13 +1,20 @@
 #pragma once
-#include <string>
+#include "Przedmiot.hpp"
 
 namespace RPG::Items {
 
-    class Bron {
+    class Bron : public Przedmiot {
+    protected:
+        std::string nazwa;
+        int obrazenia;
+    
     public:
-        virtual ~Bron() = default;
+        Bron(std::string nazwa, int obrazenia)
+            : nazwa(nazwa), obrazenia(obrazenia) {}
 
-        virtual std::string getNazwa() const = 0;
-        virtual int getObrazenia() const = 0;
+        std::string getNazwa() const override { return nazwa; }
+        TypPrzedmiotu getTyp() const override { return TypPrzedmiotu::BRON; }
+
+        int getObrazenia() const { return obrazenia; }
     };
 }
