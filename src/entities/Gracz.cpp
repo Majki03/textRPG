@@ -1,6 +1,7 @@
 #include "../../include/Entities/Gracz.hpp"
 #include "../../include/Items/Mikstura.hpp"
 #include "../../include/Items/Bron.hpp"
+#include "../../include/Items/LegendarnaBron.hpp"
 #include <iostream>
 
 namespace RPG::Entities {
@@ -30,7 +31,7 @@ namespace RPG::Entities {
         while (exp >= expDoNastepnegoPoziomu) {
             exp -= expDoNastepnegoPoziomu;
             awansuj();
-            expDoNastepnegoPoziomu = static_cast<int>(expDoNastepnegoPoziomu * 1.5);
+            expDoNastepnegoPoziomu = static_cast<int>(expDoNastepnegoPoziomu * 1.2);
         }
     }
 
@@ -181,6 +182,104 @@ namespace RPG::Entities {
             std::cout << "To nie jest prawidlowy indeks mikstury!\n";
             return false;
         }
+    }
+
+    void Gracz::zapisz(std::ofstream& plik) const {
+        plik << imie << std::endl;
+        plik << hp << std::endl;
+        plik << maxHp << std::endl;
+        plik << sila << std::endl;
+        plik << poziom << std::endl;
+        plik << exp << std::endl;
+        plik << expDoNastepnegoPoziomu << std::endl;
+
+        plik << plecak.size() << std::endl;
+        for (const auto& item : plecak) {
+            int typ = (item->getTyp() == RPG::Items::TypPrzedmiotu::BRON) ? 0 : 1;
+            plik << typ << std::endl;
+            
+            plik << item->getNazwa() << std::endl;
+
+            if (typ == 0) {
+                auto b = static_cast<RPG::Items::Bron*>(item.get());
+                plik << b->getObrazenia() << std::endl;
+                plik << b->getBonusHp() << std::endl;
+            } else {
+                auto m = static_cast<RPG::Items::Mikstura*>(item.get());
+                plik << m->getMoc() << std::endl;
+            }
+        }
+
+        if (bron) {
+            plik << "1" << std::endl;
+            plik << bron->getNazwa() << std::endl;
+            plik << bron->getObrazenia() << std::endl;
+            plik << bron->getBonusHp() << std::endl;
+        } else {
+            plik << "0" << std::endl;
+        }
+    }
+
+    void Gracz::wczytaj(std::ifstream& plik) {
+        plecak.clear();
+        bron = nullptr;
+
+        auto safeGetLine = [&](std::string& s) {
+            char temp;
+            plik.get(temp);
+            std::getline(plik, s); 
+        };
+
+        plik >> imie; 
+        plik >> hp;
+        plik >> maxHp;
+        plik >> sila;
+        plik >> poziom;
+        plik >> exp;
+        plik >> expDoNastepnegoPoziomu;
+
+        int rozmiarPlecaka;
+        plik >> rozmiarPlecaka;
+
+        for(int i=0; i<rozmiarPlecaka; ++i) {
+            int typ;
+            plik >> typ;
+            
+            std::string nazwa;
+            safeGetLine(nazwa);
+            
+            if (typ == 0) {
+                int dmg, bonusHp;
+                plik >> dmg >> bonusHp;
+                
+                if (bonusHp > 0) {
+                    plecak.push_back(std::make_unique<RPG::Items::LegendarnaBron>(nazwa, dmg, bonusHp));
+                } else {
+                    plecak.push_back(std::make_unique<RPG::Items::Bron>(nazwa, dmg));
+                }
+            } else {
+                int moc;
+                plik >> moc;
+                plecak.push_back(std::make_unique<RPG::Items::Mikstura>(moc));
+            }
+        }
+
+        int maBron;
+        plik >> maBron;
+        if (maBron == 1) {
+            std::string nazwa;
+            safeGetLine(nazwa);
+            int dmg, bonusHp;
+            plik >> dmg >> bonusHp;
+            
+            if (bonusHp > 0) {
+                bron = std::make_unique<RPG::Items::LegendarnaBron>(nazwa, dmg, bonusHp);
+            } else {
+                bron = std::make_unique<RPG::Items::Bron>(nazwa, dmg);
+            }
+        }
+        
+        std::cout << ">>> Gra wczytana pomyslnie! <<<\n";
     }
 
 }

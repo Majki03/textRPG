@@ -4,6 +4,7 @@
 #include "../Items/Przedmiot.hpp"
 #include <memory>
 #include <vector>
+#include <fstream>
 
 namespace RPG::Entities {
 
@@ -42,6 +43,9 @@ namespace RPG::Entities {
         bool uzyjMiksturyWWalce();
         
         void zalozBron(std::unique_ptr<RPG::Items::Bron> nowaBron);
+
+        void zapisz(std::ofstream& plik) const;
+        void wczytaj(std::ifstream& plik);
     };
 
 }

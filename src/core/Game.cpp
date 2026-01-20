@@ -7,6 +7,7 @@
 #include <iostream>
 #include <random>
 #include <ctime>
+#include <fstream>
 
 namespace RPG::Core {
 
@@ -38,8 +39,10 @@ namespace RPG::Core {
         std::cout << "1. Eksploruj swiat (Szukaj walki)\n";
         std::cout << "2. Odpocznij (Leczenie)\n";
         std::cout << "3. Ekwipunek (Zmien bron)\n";
-        std::cout << "4. Wyjdz z gry\n";
-        std::cout << "5. WALKA Z BOSSEM (Koniec Gry)\n";
+        std::cout << "4. WALKA Z BOSSEM (Koniec Gry)\n";
+        std::cout << "5. Zapisz gre\n";
+        std::cout << "6. Wczytaj gre\n";
+        std::cout << "7. Wyjdz z gry\n";
         std::cout << "Wybor: ";
 
         int wybor;
@@ -64,11 +67,13 @@ namespace RPG::Core {
                     gracz->uzyjPrzedmiotu(nr);
                 }
                 break;
-            case 4: 
+            case 4: walkaZBossem(); break;
+            case 5: zapiszGre(); break;
+            case 6: wczytajGre(); break;
+            case 7:
                 std::cout << "Zamykanie gry...\n";
                 isRunning = false; 
                 break;
-            case 5: walkaZBossem(); break;
             default: std::cout << "Nieznana opcja.\n";
         }
     }
@@ -97,11 +102,11 @@ namespace RPG::Core {
             );
             gracz->podniesPrzedmiot(std::move(legenda));
         }
-        else if (los <= 20) {
+        else if (los <= 10) {
             std::cout << "Znalazles stara bron.\n";
             gracz->podniesPrzedmiot(generujBron(1));
         }
-        else if (los <= 35) {
+        else if (los <= 20) {
             std::cout << "Znalazles miksture.\n";
             gracz->podniesPrzedmiot(std::make_unique<RPG::Items::Mikstura>(30));
         }
@@ -239,6 +244,38 @@ namespace RPG::Core {
         } else {
             std::cout << "\nZostales zmiazdzony przez Mrocznego Pana...\nGame Over.\n";
             isRunning = false;
+        }
+    }
+
+    void Game::zapiszGre() {
+        std::ofstream plik("save_rpg.txt");
+        if (plik.is_open()) {
+            gracz->zapisz(plik);
+            plik.close();
+            std::cout << "\n[SYSTEM] Gra zostala zapisana do pliku 'save_rpg.txt'.\n";
+        } else {
+            std::cout << "\n[BLAD] Nie udalo sie otworzyc pliku do zapisu!\n";
+        }
+    }
+
+    void Game::wczytajGre() {
+        std::ifstream plik("save_rpg.txt");
+        if (plik.is_open()) {
+            // Sprawdź czy plik nie jest pusty (prostym sposobem)
+            if (plik.peek() == std::ifstream::traits_type::eof()) {
+                std::cout << "\n[BLAD] Plik zapisu jest pusty lub uszkodzony.\n";
+                return;
+            }
+
+            try {
+                gracz->wczytaj(plik);
+            } catch (const std::exception& e) {
+                std::cout << "\n[BLAD] Plik zapisu jest uszkodzony! " << e.what() << "\n";
+            }
+            
+            plik.close();
+        } else {
+            std::cout << "\n[INFO] Nie znaleziono pliku zapisu.\n";
         }
     }
     

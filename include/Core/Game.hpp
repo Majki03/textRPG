@@ -14,6 +14,8 @@ namespace RPG::Core {
         void eksploruj();
         void walka();
         void walkaZBossem();
+        void zapiszGre();
+        void wczytajGre();
 
         int losujLiczbe(int min, int max);
 

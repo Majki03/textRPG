@@ -1,0 +1,103 @@
+Szeli
+421
+421
+35
+16
+1486
+1522
+25
+1
+Mikstura Leczenia (30 HP)
+30
+0
+Wlocznia (Tier 1)
+7
+0
+1
+Mikstura Leczenia (30 HP)
+30
+0
+Wlocznia (Tier 2)
+12
+0
+0
+Mlot (Tier 2)
+18
+0
+1
+Mikstura Leczenia (30 HP)
+30
+1
+Mikstura Leczenia (30 HP)
+30
+0
+*** [LEGENDARY] Ostrze Przeznaczenia (HP +104) ***
+50
+104
+0
+Mlot (Tier 1)
+13
+0
+0
+Wlocznia (Tier 1)
+7
+0
+0
+Mlot (Tier 1)
+13
+0
+1
+Mikstura Leczenia (30 HP)
+30
+1
+Mikstura Leczenia (30 HP)
+30
+0
+Topor (Tier 2)
+15
+0
+1
+Mikstura Leczenia (30 HP)
+30
+0
+Mlot (Tier 2)
+18
+0
+0
+Mlot (Tier 2)
+18
+0
+1
+Mikstura Leczenia (30 HP)
+30
+0
+Wlocznia (Tier 1)
+7
+0
+1
+Mikstura Leczenia (30 HP)
+30
+0
+Topor (Tier 2)
+15
+0
+0
+*** [LEGENDARY] Ostrze Przeznaczenia (HP +124) ***
+65
+124
+0
+Mlot (Tier 1)
+13
+0
+0
+Topor (Tier 2)
+15
+0
+0
+Mlot (Tier 2)
+18
+0
+1
+*** [LEGENDARY] Ostrze Przeznaczenia (HP +171) ***
+50
+171
